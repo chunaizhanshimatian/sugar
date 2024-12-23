@@ -159,3 +159,32 @@ def manage_books():
     conn.close()
     
     return render_template('admin_books.html', books=books)
+
+@main_views.route('/admin/missingBook')
+def missing_book():
+    return render_template('missingBook.html')
+
+@main_views.route('/api/missingbooks', methods=['POST'])
+def register_missing_book():
+    db = Database()
+    data = request.json
+    isbn = data.get('isbn')
+    title = data.get('title')
+    publisher = data.get('publisher')
+    supplier = data.get('supplier')
+    quantity = data.get('quantity')
+
+    try:
+        conn = db.connect()
+        with conn.cursor() as cursor:
+            query = """
+                INSERT INTO missingbooks (ISBN, Title, PublisherID, SupplierID, Quantity, Register_Date)
+                VALUES (%s, %s, %s, %s, %s, CURDATE())
+            """
+            cursor.execute(query, (isbn, title, publisher, supplier, quantity))
+            conn.commit()
+        return jsonify({"success": True, "message": "登记成功", "data": data})
+    except Exception as e:
+        return jsonify({"success": False, "message": "登记失败，请重试", "error": str(e)}), 500
+    finally:
+        conn.close()
