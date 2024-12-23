@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图书馆仪表盘</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+
+    <h1>图书馆仪表盘</h1>
+    <p class="text">这里是图书馆的仪表盘，您可以在这里查询图书。</p>
+    <a href="/logout">退出登录</a>
+
+    <!-- 客户信息查询表单 -->
+    <div class="search-form">
+        <form id="customer-search-form">
+            客户ID: <input type="text" id="customer_id" name="customer_id">
+            <button type="button" onclick="searchCustomer()">查询客户信息</button>
+        </form>
+    </div>
+
+    <!-- 书目信息查询表单 -->
+    <div class="search-form">
+        <form id="book-search-form">
+            书号: <input type="text" id="isbn" name="isbn">
+            书名: <input type="text" id="title" name="title">
+            出版社: <input type="text" id="publisher" name="publisher">
+            关键字: <input type="text" id="keywords" name="keywords">
+            作者: <input type="text" id="author" name="author">
+            <button type="button" onclick="searchBooks()">查询书目信息</button>
+        </form>
+    </div>
+
+    <!-- 客户信息展示 -->
+    <div id="customer-info"></div>
+
+    <!-- 图书信息展示 -->
+    <table id="books-table">
+        <thead>
+            <tr>
+                <th>书号</th>
+                <th>书名</th>
+                <th>出版社</th>
+                <th>价格</th>
+                <th>关键字</th>
+                <th>库存</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 图书数据将通过JavaScript动态插入 -->
+        </tbody>
+    </table>
+    <footer>
+        <p>版权所有 © 2024 年图书馆</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

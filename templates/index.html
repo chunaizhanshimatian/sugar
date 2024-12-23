@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图书馆主页</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <header>
+        <h1>欢迎来到我们的图书馆</h1>
+    </header>
+    <p class="p1">这里是图书馆的主页，您可以在这里选择登录选项。</p>
+    <!-- 添加登录入口链接 -->
+    <p class="p2"><a href="/login">登录</a> | <a href="/register">注册</a> | <a href="/admin">管理员入口</a></p>
+    <footer>
+        <p>版权所有 © 2024 年图书馆</p>
+    </footer>
+</body>
+</html>

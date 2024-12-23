@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>管理图书</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_books.css') }}">
+</head>
+<body>
+    <h1>管理图书</h1>
+    <p>在这里，您可以查看所有图书信息，并进行新书入库操作。</p>
+    <div class="menu">
+    <!-- 查询图书情况 -->
+    <a href="{{ url_for('main.manage_books') }}">更新所有图书</a>
+    <!-- 新书入库表单 -->
+  
+    <h2>新书入库</h2>
+    <form method="POST" action="{{ url_for('main.manage_books') }}">
+        书号: <input type="text" name="isbn" required><br>
+        书名: <input type="text" name="title" required><br>
+        作者: <input type="text" name="authors"><br>
+        出版社: <input type="text" name="publisher"><br>
+        价格: <input type="text" name="price"><br>
+        关键字: <input type="text" name="keywords"><br>
+        目录: <input type="text" name="summary"><br>
+        封皮: <input type="text" name="cover_image"><br>
+        存货量: <input type="number" name="stock_quantity"><br>
+        供书商: <input type="text" name="supplier"><br>
+        <input type="submit" value="添加新书">
+    </form>
+
+    <!-- 显示所有图书 -->
+    <h2>所有图书</h2>
+    <table border="1">
+        <tr>
+            <th>书号</th>
+            <th>书名</th>
+            <th>作者</th>
+            <th>出版社</th>
+            <th>价格</th>
+            <th>关键字</th>
+            <th>目录</th>
+            <th>封皮</th>
+            <th>存货量</th>
+            <th>供书商</th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.ISBN }}</td>
+            <td>{{ book.Title }}</td>
+            <td>{{ book.AuthorName }}</td>
+            <td>{{ book.PublisherName }}</td>
+            <td>{{ book.Price }}</td>
+            <td>{{ book.Keywords }}</td>
+            <td>{{ book.Summary }}</td>
+            <td>{{ book.CoverImage }}</td>
+            <td>{{ book.StockQuantity }}</td>
+            <td>{{ book.SupplierName }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <footer>
+        <p>版权所有 © 2024 年图书馆</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #000000;
+    padding: 10px 0;
+    text-align: center;
+    color: #ffffff;
+}
+
+.p1 {
+    margin-top: 200px;
+    text-align: center;
+    font-size: 50px;
+    width: 100%;
+}
+
+.p2 {
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    line-height: 100px;
+}
+
+a{
+    color: #000;
+}
+
+footer {
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

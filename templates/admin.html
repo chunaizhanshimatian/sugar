@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图书馆管理员界面</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <h1>图书馆管理员界面</h1>
+    <p class="wel">欢迎管理员，您可以在这里管理图书和用户信息。</p>
+    <!-- 添加管理员功能链接 -->
+    <p class="work">
+        <a href="/admin/books">管理图书</a> | 
+        <a href="/admin/inventory">管理库存</a> | 
+        <a href="/admin/users">管理用户</a>
+    </p>
+    <!-- 其他管理员功能 -->
+    <footer>
+        <p>版权所有 © 2024 年图书馆</p>
+    </footer>
+</body>
+</html>

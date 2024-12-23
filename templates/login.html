@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图书馆登录</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    <header>
+        <h1>欢迎来到我们的图书馆</h1>
+    </header>
+    <div class="cont-parent"> 
+        <div class="cont">
+            <div class="form sign-in">
+                <h2 class="welcome">欢迎回来</h2>
+                <div>
+                <form action="/login" method="post">
+                    <label>
+                        <span>用户名</span>
+                        <input type="text" name="username" placeholder="Username" required/>
+                    </label>
+                    <br>
+                    <label>
+                        <span>密码</span>
+                        <input type="password" name="password" placeholder="Password" required/>
+                    </label>
+                    <br>
+                    <button type="submit" class="submit">登录</button>
+                </form>
+                </div>
+            </div>
+            <div class="sub-cont">
+                <div class="img">
+                    <div class="img__text m--up">
+                        <h2>新用户?</h2>
+                        <p class="reg"><a href="/register">注册</a>一个账号!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>版权所有 © 2024 年图书馆</p>
+    </footer>
+</body>
+</html>
