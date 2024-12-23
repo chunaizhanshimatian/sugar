@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户信息管理</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #customerInfo {
+            margin-top: 20px;
+        }
+        .customer-details, .orders {
+            margin-bottom: 20px;
+        }
+        .customer-details p, .orders p {
+            margin: 5px 0;
+        }
+        .orders ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .orders li {
+            background: #f9f9f9;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>客户信息管理</h1>
+        <form id="customerForm">
+            <label for="customerID">客户ID:</label>
+            <input type="text" id="customerID" name="customerID" required>
+            <button type="submit">获取客户信息</button>
+        </form>
+        <div id="customerInfo"></div>
+    </div>
+
+    <script>
+        document.getElementById('customerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const customerID = document.getElementById('customerID').value;
+            fetch(`/get_customer_info?customer_id=${customerID}`)
+                .then(response => response.json())
+                .then(data => {
+                    const customerInfoDiv = document.getElementById('customerInfo');
+                    customerInfoDiv.innerHTML = ''; // 清空之前的内容
+
+                    if (data.message) {
+                        customerInfoDiv.innerHTML = `<p class="error">${data.message}</p>`;
+                    } else {
+                        let customerHTML = `
+                            <div class="customer-details">
+                                <h2>客户详情</h2>
+                                <p><strong>姓名:</strong> ${data.customer.Name}</p>
+                                <p><strong>地址:</strong> ${data.customer.Address}</p>
+                                <p><strong>账户余额:</strong> ${data.customer.AccountBalance}</p>
+                                <p><strong>信用等级:</strong> ${data.customer.CreditLevel}</p>
+                            </div>
+                        `;
+                        let ordersHTML = `<div class="orders"><h2>订单</h2>`;
+                        if (data.orders.length > 0) {
+                            ordersHTML += `<ul>`;
+                            data.orders.forEach(order => {
+                                ordersHTML += `
+                                    <li>
+                                        <p><strong>订单ID:</strong> ${order.OrderID}</p>
+                                        <p><strong>日期:</strong> ${order.Date}</p>
+                                        <p><strong>地址:</strong> ${order.Address}</p>
+                                        <p><strong>总金额:</strong> ${order.TotalAmount}</p>
+                                        <p><strong>状态:</strong> ${order.Status}</p>
+                                    </li>
+                                `;
+                            });
+                            ordersHTML += `</ul>`;
+                        } else {
+                            ordersHTML += `<p>该客户没有订单。</p>`;
+                        }
+                        ordersHTML += `</div>`;
+                        customerInfoDiv.innerHTML = customerHTML + ordersHTML;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

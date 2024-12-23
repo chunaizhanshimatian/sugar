@@ -3,6 +3,6 @@
 class Config:
     MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
-    MYSQL_PASSWORD = 'ning20040630hu'
-    MYSQL_DB = 'ob'
+    MYSQL_PASSWORD = 'Xzs-2004'
+    MYSQL_DB = 'onlinebookstore'
     SECRET_KEY = 'your_very_secret_key_here'

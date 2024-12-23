@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, jsonify,flash,redirect,ur
 from werkzeug.security import check_password_hash
 from .database import Database
 import pymysql
-
+import traceback
 # 创建一个 Blueprint 对象
 main_views = Blueprint('main', __name__)
 
@@ -37,7 +37,11 @@ def login():
         conn.close()
 
 
-@main_views.route('/customer/info', methods=['GET'])
+@main_views.route('/admin/users', methods=['GET'])
+def admin_customer():
+    return render_template('admin_customers.html')
+
+@main_views.route('/get_customer_info', methods=['GET'])
 def customer_info():
     customer_id = request.args.get('customer_id')
     if not customer_id:
@@ -48,19 +52,26 @@ def customer_info():
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     try:
+        # 查询客户信息
         cursor.execute("SELECT * FROM customers WHERE CustomerID = %s", (customer_id,))
         customer = cursor.fetchone()
-        if customer:
-            cursor.execute("SELECT * FROM viewcustomerorders WHERE CustomerID = %s", (customer_id,))
-            orders = cursor.fetchall()
-            return jsonify({"customer": customer, "orders": orders})
-        else:
+        if not customer:
             return jsonify({"message": "Customer not found"}), 404
+
+        # 查询订单信息
+        cursor.execute("SELECT * FROM orders WHERE CustomerID = %s", (customer_id,))
+        orders = cursor.fetchall()
+
+        # 返回客户信息和订单信息
+        return jsonify({"customer": customer, "orders": orders})
     except Exception as e:
-        return jsonify({"message": "Error retrieving customer info", "error": str(e)}), 500
+        # 捕获异常并返回详细的错误信息
+        error_message = f"Error retrieving customer info: {str(e)}"
+        return jsonify({"message": error_message}), 500
     finally:
         cursor.close()
         conn.close()
+
 
 @main_views.route('/books', methods=['GET'])
 def search_books():
