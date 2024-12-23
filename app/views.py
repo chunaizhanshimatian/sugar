@@ -137,15 +137,20 @@ def manage_books():
         authors = request.form.get('authors').split(',')  # 假设作者字段以逗号分隔
         publisher_id = request.form.get('publisher_id')
         price = request.form.get('price')
+        keywords = request.form.get('keywords').split(',')  # 假设关键字字段以逗号分隔
+        summary = request.form.get('summary')
+        cover_image = request.form.get('cover_image')
+        stock_quantity = request.form.get('stock_quantity')
+        suppliers = request.form.get('supplier').split(',')  # 假设供应商字段以逗号分隔
         
-        # 数据验证（这里需要根据实际情况添加验证逻辑）
+        # 数据验证
         if not isbn or not title or not price:
             flash('所有字段都是必填的。')
             return redirect(url_for('main.manage_books'))
         
         try:
-            # 插入数据到数据库
-            cursor.execute("INSERT INTO books (ISBN, Title, PublisherID, Price) VALUES (%s, %s, %s, %s)", (isbn, title, publisher_id, price))
+            # 插入书籍信息到数据库
+            cursor.execute("INSERT INTO books (ISBN, Title, PublisherID, Price, Keywords, Summary, CoverImage, StockQuantity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (isbn, title, publisher_id, price, ','.join(keywords), summary, cover_image, stock_quantity))
             conn.commit()
             
             # 处理作者关系
@@ -153,6 +158,10 @@ def manage_books():
                 cursor.execute("INSERT INTO authors (AuthorName) VALUES (%s)", (author,))
                 author_id = cursor.lastrowid
                 cursor.execute("INSERT INTO book_authors (BookISBN, AuthorID) VALUES (%s, %s)", (isbn, author_id))
+            
+            # 处理供应商关系
+            for supplier in suppliers:
+                cursor.execute("INSERT INTO book_suppliers (BookISBN, SupplierID) VALUES (%s, %s)", (isbn, supplier))
             
             flash('新书添加成功！')
         except pymysql.MySQLError as e:
@@ -170,3 +179,32 @@ def manage_books():
     conn.close()
     
     return render_template('admin_books.html', books=books)
+
+@main_views.route('/admin/missingBook')
+def missing_book():
+    return render_template('missingBook.html')
+
+@main_views.route('/api/missingbooks', methods=['POST'])
+def register_missing_book():
+    db = Database()
+    data = request.json
+    isbn = data.get('isbn')
+    title = data.get('title')
+    publisher = data.get('publisher')
+    supplier = data.get('supplier')
+    quantity = data.get('quantity')
+
+    try:
+        conn = db.connect()
+        with conn.cursor() as cursor:
+            query = """
+                INSERT INTO missingbooks (ISBN, Title, PublisherID, SupplierID, Quantity, Register_Date)
+                VALUES (%s, %s, %s, %s, %s, CURDATE())
+            """
+            cursor.execute(query, (isbn, title, publisher, supplier, quantity))
+            conn.commit()
+        return jsonify({"success": True, "message": "登记成功", "data": data})
+    except Exception as e:
+        return jsonify({"success": False, "message": "登记失败，请重试", "error": str(e)}), 500
+    finally:
+        conn.close()

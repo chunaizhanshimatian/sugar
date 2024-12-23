@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>缺书登记</title>
+</head>
+<body>
+    <h1>缺书登记</h1>
+    <form id="missingBookForm">
+        <label for="isbn">书号 (ISBN):</label>
+        <input type="text" id="isbn" name="isbn" required><br><br>
+
+        <label for="title">书名:</label>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="publisher">出版社:</label>
+        <input type="text" id="publisher" name="publisher" required><br><br>
+
+        <label for="supplier">供书商:</label>
+        <input type="text" id="supplier" name="supplier" required><br><br>
+
+        <label for="quantity">缺书数量:</label>
+        <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+
+        <label for="register_date">登记日期:</label>
+        <input type="datetime-local" id="register_date" name="register_date" required><br><br>
+
+        <button type="submit">提交</button>
+    </form>
+
+    <h2>登记结果</h2>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('missingBookForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                isbn: document.getElementById('isbn').value,
+                title: document.getElementById('title').value,
+                publisher: document.getElementById('publisher').value,
+                supplier: document.getElementById('supplier').value,
+                quantity: parseInt(document.getElementById('quantity').value, 10),
+                register_date: document.getElementById('register_date').value
+            };
+
+            fetch('/api/missingbooks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `登记成功！登记信息：${JSON.stringify(data)}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = '登记失败，请重试。';
+            });
+        });
+    </script>
+</body>
+</html>
+

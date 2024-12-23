@@ -11,7 +11,7 @@
  Target Server Version : 80040 (8.0.40)
  File Encoding         : 65001
 
- Date: 22/12/2024 19:45:59
+ Date: 23/12/2024 19:25:07
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `authors`  (
   `AuthorID` int NOT NULL AUTO_INCREMENT,
   `AuthorName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`AuthorID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of authors
@@ -48,7 +48,7 @@ CREATE TABLE `backorder`  (
   INDEX `SupplierID`(`SupplierID` ASC) USING BTREE,
   CONSTRAINT `backorder_ibfk_1` FOREIGN KEY (`ISBN`) REFERENCES `books` (`ISBN`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `backorder_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `suppliers` (`SupplierID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of backorder
@@ -106,6 +106,11 @@ CREATE TABLE `books`  (
 -- Records of books
 -- ----------------------------
 INSERT INTO `books` VALUES ('1', '1', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES ('2', '2', NULL, 2.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES ('3', '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES ('4', '123', NULL, 111.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES ('5', '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES ('6', '11', NULL, 11.00, '1', '', '', 1, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for customers
@@ -168,6 +173,7 @@ CREATE TABLE `missingbooks`  (
 -- Records of missingbooks
 -- ----------------------------
 INSERT INTO `missingbooks` VALUES ('1', '1', '1', '1', 1, '2024-12-21 00:00:00');
+INSERT INTO `missingbooks` VALUES ('111', '1', '1', '1', 1, '2024-12-23 00:00:00');
 
 -- ----------------------------
 -- Table structure for orderdetails
@@ -184,7 +190,7 @@ CREATE TABLE `orderdetails`  (
   INDEX `ISBN`(`ISBN` ASC) USING BTREE,
   CONSTRAINT `orderdetails_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orderdetails_ibfk_2` FOREIGN KEY (`ISBN`) REFERENCES `books` (`ISBN`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orderdetails
@@ -204,7 +210,7 @@ CREATE TABLE `orders`  (
   PRIMARY KEY (`OrderID`) USING BTREE,
   INDEX `CustomerID`(`CustomerID` ASC) USING BTREE,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
@@ -218,7 +224,7 @@ CREATE TABLE `publishers`  (
   `PublisherID` int NOT NULL AUTO_INCREMENT,
   `PublisherName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`PublisherID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publishers
