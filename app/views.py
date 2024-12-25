@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, request, jsonify,flash,redirect,ur
 from werkzeug.security import check_password_hash
 from .database import Database
 import pymysql
-
+from datetime import datetime
+import uuid
 # 创建一个 Blueprint 对象
 main_views = Blueprint('main', __name__)
 
@@ -232,3 +233,39 @@ def customer_info():
     finally:
         cursor.close()
         conn.close()
+
+@main_views.route('/place_order_form', methods=['GET'])
+def place_order_form():
+    return render_template('order_form.html')
+
+@main_views.route('/place_order', methods=['POST'])
+def place_order():
+    customer_id = request.form.get('customer_id')
+    books = request.form.get('books').split(',')
+    quantity = int(request.form.get('quantity'))
+    shipping_address = request.form.get('shipping_address')
+
+    # 这里应该添加逻辑来检查库存，创建订单，以及更新库存
+    # 以下代码是一个简化的示例，实际应用中需要更复杂的逻辑
+
+    order_date = datetime.now().strftime('%Y-%m-%d')
+    total_amount = 1  # 假设这是一个计算总金额的函数
+
+    # 插入订单信息到数据库，不包括自增的OrderID
+    db = Database()
+    conn = db.connect()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO orders (OrderDate, CustomerID, ShippingAddress, TotalAmount) VALUES (%s, %s, %s, %s)",
+                   (order_date, customer_id, shipping_address, total_amount))
+    conn.commit()
+    order_id = cursor.lastrowid  # 获取数据库生成的自增ID
+    cursor.close()
+    conn.close()
+
+    # 重定向到订单确认页面
+    return render_template('order_confirmation.html', 
+                           order_id=order_id, 
+                           order_date=order_date, 
+                           customer_id=customer_id, 
+                           total_amount=total_amount, 
+                           shipping_address=shipping_address)

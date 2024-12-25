@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>订单确认</title>
+</head>
+<body>
+    <h1>订单确认</h1>
+    <p>订单号：{{ order_id }}</p>
+    <p>订单日期：{{ order_date }}</p>
+    <p>客户ID：{{ customer_id }}</p>
+    <p>总金额：{{ total_amount }}</p>
+    <p>发货地址：{{ shipping_address }}</p>
+    <p>发货状态：待处理</p>
+    <!-- 确认按钮 -->
+    <button onclick="confirmOrder()">确认订单</button>
+
+    <script>
+        function confirmOrder() {
+            // 这里可以添加发送确认请求到服务器的代码，如果需要的话
+            window.location.href = "{{ url_for('dashboard') }}"; // 返回仪表盘页面
+        }
+    </script>
+</body>
+</html>

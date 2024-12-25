@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>订单申请表</title>
+</head>
+<body>
+    <h1>提交订单</h1>
+    <form action="/place_order" method="post">
+        <label for="customer_id">客户ID:</label>
+        <input type="text" id="customer_id" name="customer_id" required><br><br>
+        
+        <label for="books">书籍（ISBN）:</label>
+        <input type="text" id="books" name="books" placeholder="输入ISBN，用逗号分隔"><br><br>
+        
+        <label for="quantity">数量:</label>
+        <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+        
+        <label for="shipping_address">发货地址:</label>
+        <input type="text" id="shipping_address" name="shipping_address" required><br><br>
+        
+        <input type="submit" value="提交订单">
+    </form>
+</body>
+</html>
