@@ -38,7 +38,7 @@ def login():
 
 
 @main_views.route('/customer/info', methods=['GET'])
-def customer_info():
+def get_customer_info():
     customer_id = request.args.get('customer_id')
     if not customer_id:
         return jsonify({"message": "Missing customer_id"}), 400
@@ -196,4 +196,39 @@ def register_missing_book():
     except Exception as e:
         return jsonify({"success": False, "message": "登记失败，请重试", "error": str(e)}), 500
     finally:
+        conn.close()
+
+@main_views.route('/admin/users', methods=['GET'])
+def admin_customer():
+    return render_template('admin_customers.html')
+
+@main_views.route('/get_customer_info', methods=['GET'])
+def customer_info():
+    customer_id = request.args.get('customer_id')
+    if not customer_id:
+        return jsonify({"message": "Missing customer_id"}), 400
+
+    db = Database()
+    conn = db.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    try:
+        # 查询客户信息
+        cursor.execute("SELECT * FROM customers WHERE CustomerID = %s", (customer_id,))
+        customer = cursor.fetchone()
+        if not customer:
+            return jsonify({"message": "Customer not found"}), 404
+
+        # 查询订单信息
+        cursor.execute("SELECT * FROM orders WHERE CustomerID = %s", (customer_id,))
+        orders = cursor.fetchall()
+
+        # 返回客户信息和订单信息
+        return jsonify({"customer": customer, "orders": orders})
+    except Exception as e:
+        # 捕获异常并返回详细的错误信息
+        error_message = f"Error retrieving customer info: {str(e)}"
+        return jsonify({"message": error_message}), 500
+    finally:
+        cursor.close()
         conn.close()
