@@ -114,6 +114,7 @@ def admin():
     # 这里可以添加管理员登录验证逻辑
     return render_template('admin.html')  # 渲染管理员界面模板
 
+
 @main_views.route('/admin/books', methods=['GET', 'POST'])
 def manage_books():
     db = Database()
@@ -122,36 +123,51 @@ def manage_books():
     
     if request.method == 'POST':
         # 获取表单数据
-        isbn = request.form.get('isbn')
         title = request.form.get('title')
         authors = request.form.get('authors').split(',')  # 假设作者字段以逗号分隔
         publisher_id = request.form.get('publisher_id')
         price = request.form.get('price')
         keywords = request.form.get('keywords').split(',')  # 假设关键字字段以逗号分隔
         summary = request.form.get('summary')
-        cover_image = request.form.get('cover_image')
+        cover_image_file = request.files.get('cover_image')  # 获取文件对象
         stock_quantity = request.form.get('stock_quantity')
         suppliers = request.form.get('supplier').split(',')  # 假设供应商字段以逗号分隔
         
         # 数据验证
-        if not isbn or not title or not price:
-            flash('所有字段都是必填的。')
+        if not all([title, price]):
+            flash('标题和价格是必填字段。')
             return redirect(url_for('main.manage_books'))
         
         try:
-            # 插入书籍信息到数据库
-            cursor.execute("INSERT INTO books (ISBN, Title, PublisherID, Price, Keywords, Summary, CoverImage, StockQuantity) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (isbn, title, publisher_id, price, ','.join(keywords), summary, cover_image, stock_quantity))
+            # 插入书籍信息到数据库（不包括ISBN，因为它是自增的）
+            cursor.execute("INSERT INTO books (Title, PublisherID, Price, Keywords, Summary, StockQuantity) VALUES (%s, %s, %s, %s, %s, %s)", (title, publisher_id, price, ','.join(keywords), summary, stock_quantity))
             conn.commit()
+            
+            # 获取自增的ISBN
+            last_inserted_isbn = cursor.lastrowid
+            
             
             # 处理作者关系
             for author in authors:
                 cursor.execute("INSERT INTO authors (AuthorName) VALUES (%s)", (author,))
+                conn.commit()
                 author_id = cursor.lastrowid
-                cursor.execute("INSERT INTO book_authors (BookISBN, AuthorID) VALUES (%s, %s)", (isbn, author_id))
+                cursor.execute("INSERT INTO book_authors (BookISBN, AuthorID) VALUES (%s, %s)", (last_inserted_isbn, author_id))
+                conn.commit()
             
             # 处理供应商关系
-            for supplier in suppliers:
-                cursor.execute("INSERT INTO book_suppliers (BookISBN, SupplierID) VALUES (%s, %s)", (isbn, supplier))
+            for supplier_name in suppliers:
+                cursor.execute("SELECT SupplierID FROM suppliers WHERE SupplierName = %s", (supplier_name,))
+                supplier_id = cursor.fetchone()
+                if supplier_id:
+                    cursor.execute("INSERT INTO book_suppliers (BookISBN, SupplierID) VALUES (%s, %s)", (last_inserted_isbn, supplier_id['SupplierID']))
+                    conn.commit()
+                else:
+                    cursor.execute("INSERT INTO suppliers (SupplierName) VALUES (%s)", (supplier_name,))
+                    conn.commit()
+                    supplier_id = cursor.lastrowid
+                    cursor.execute("INSERT INTO book_suppliers (BookISBN, SupplierID) VALUES (%s, %s)", (last_inserted_isbn, supplier_id))
+                    conn.commit()
             
             flash('新书添加成功！')
         except pymysql.MySQLError as e:
