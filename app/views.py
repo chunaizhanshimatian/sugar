@@ -41,8 +41,10 @@ def login():
 @main_views.route('/customer/info', methods=['GET'])
 def get_customer_info():
     customer_id = request.args.get('customer_id')
-    if not customer_id:
-        return jsonify({"message": "Missing customer_id"}), 400
+    password = request.args.get('password')  # 获取URL参数中的密码
+
+    if not customer_id or not password:  # 检查是否提供了customer_id和password
+        return jsonify({"message": "Missing customer_id or password"}), 400
 
     db = Database()
     conn = db.connect()
@@ -51,12 +53,14 @@ def get_customer_info():
     try:
         cursor.execute("SELECT * FROM customers WHERE CustomerID = %s", (customer_id,))
         customer = cursor.fetchone()
-        if customer:
+        if customer and check_password_hash(customer['Password'], password):  # 验证密码
+            # 确保不返回密码信息
+            customer.pop('Password', None)
             cursor.execute("SELECT * FROM viewcustomerorders WHERE CustomerID = %s", (customer_id,))
             orders = cursor.fetchall()
             return jsonify({"customer": customer, "orders": orders})
         else:
-            return jsonify({"message": "Customer not found"}), 404
+            return jsonify({"message": "Invalid customer_id or password"}), 401
     except Exception as e:
         return jsonify({"message": "Error retrieving customer info", "error": str(e)}), 500
     finally:

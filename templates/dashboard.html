@@ -13,12 +13,16 @@
     <a href="/logout">退出登录</a>
 
     <!-- 客户信息查询表单 -->
+
     <div class="search-form">
         <form id="customer-search-form">
-            客户ID: <input type="text" id="customer_id" name="customer_id">
+            客户ID: <input type="text" id="customer_id" name="customer_id" required>
+            密码: <input type="password" id="password" name="password" required>
             <button type="button" onclick="searchCustomer()">查询客户信息</button>
         </form>
+        <div id="customer-info1" class="customer-info-scroll"></div>
     </div>
+
 
     <!-- 书目信息查询表单 -->
     <div class="search-form">
@@ -31,9 +35,6 @@
             <button type="button" onclick="searchBooks()">查询书目信息</button>
         </form>
     </div>
-
-    <!-- 客户信息展示 -->
-    <div id="customer-info"></div>
 
     <!-- 图书信息展示 -->
     <table id="books-table">

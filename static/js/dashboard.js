@@ -1,14 +1,67 @@
 // scripts.js
 function searchCustomer() {
     var customerId = document.getElementById('customer_id').value;
-    fetch(`/customer/info?customer_id=${customerId}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('customer-info').innerHTML = JSON.stringify(data, null, 2);
-        })
-        .catch(error => console.error('Error:', error));
-}
+    var password = document.getElementById('password').value; // 获取密码输入值
 
+    // 简单的前端验证，确保ID和密码都已输入
+    if (!customerId || !password) {
+        alert('客户ID和密码不能为空');
+        return;
+    }
+
+    fetch(`/customer/info?customer_id=${customerId}&password=${encodeURIComponent(password)}`, {
+        method: 'GET' // 使用GET方法
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const customerInfoDiv = document.getElementById('customer-info1');
+        customerInfoDiv.innerHTML = ''; // 清空之前的内容
+
+        if (data.message) {
+            customerInfoDiv.innerHTML = `<p class="error">${data.message}</p>`; // 展示错误信息
+        } else {
+            let customerHTML = `
+                <div class="customer-details">
+                    <h2>客户详情</h2>
+                    <p><strong>姓名:</strong> ${data.customer.Name}</p>
+                    <p><strong>地址:</strong> ${data.customer.Address}</p>
+                    <p><strong>账户余额:</strong> ${data.customer.AccountBalance}</p>
+                    <p><strong>信用等级:</strong> ${data.customer.CreditLevel}</p>
+                </div>
+            `;
+            let ordersHTML = `<div class="orders"><h2>订单</h2>`;
+            if (data.orders.length > 0) {
+                ordersHTML += `<ul>`;
+                data.orders.forEach(order => {
+                    ordersHTML += `
+                        <li>
+                            <p><strong>订单ID:</strong> ${order.OrderID}</p>
+                            <p><strong>日期:</strong> ${order.OrderDate}</p>
+                            <p><strong>地址:</strong> ${order.Address}</p>
+                            <p><strong>总金额:</strong> ${order.TotalAmount}</p>
+                            <p><strong>状态:</strong> ${order.Status}</p>
+                        </li>
+                    `;
+                });
+                ordersHTML += `</ul>`;
+            } else {
+                ordersHTML += `<p>该客户没有订单。</p>`;
+            }
+            ordersHTML += `</div>`;
+            customerInfoDiv.innerHTML = customerHTML + ordersHTML;
+        }
+    })
+    .catch(error => {
+        const customerInfoDiv = document.getElementById('customer-info1');
+        customerInfoDiv.innerHTML = `<p class="error">请求失败: ${error.message}</p>`; // 展示请求失败的错误信息
+        console.error('Error:', error);
+    });
+}
 function searchBooks() {
     var isbn = document.getElementById('isbn').value;
     var title = document.getElementById('title').value;

@@ -7,6 +7,18 @@ h1{
     text-align: center;
 }
 
+.customer-info-scroll {
+    max-height: 200px; /* 设置显示区域的最大高度 */
+    overflow-y: auto; /* 超出部分添加垂直滚动条 */
+    border: 1px solid #ddd; /* 为显示区域添加边框 */
+    padding: 10px; /* 内边距 */
+    margin-top: 20px; /* 与上方元素的外边距 */
+    background-color: #fff; /* 背景颜色 */
+}
+
+/* 如果您希望客户信息区域在特定条件下（如客户信息较多时）才出现滚动条，可以保持overflow-y为auto，
+   这样它只会在内容超出时显示滚动条。 */
+
 table {
     width: 100%;
     border-collapse: collapse;
