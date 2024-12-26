@@ -11,7 +11,7 @@
  Target Server Version : 80040 (8.0.40)
  File Encoding         : 65001
 
- Date: 23/12/2024 19:25:07
+ Date: 26/12/2024 19:36:41
 */
 
 SET NAMES utf8mb4;
@@ -25,11 +25,13 @@ CREATE TABLE `authors`  (
   `AuthorID` int NOT NULL AUTO_INCREMENT,
   `AuthorName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`AuthorID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of authors
 -- ----------------------------
+INSERT INTO `authors` VALUES (6, '1');
+INSERT INTO `authors` VALUES (7, '1');
 
 -- ----------------------------
 -- Table structure for backorder
@@ -37,57 +39,63 @@ CREATE TABLE `authors`  (
 DROP TABLE IF EXISTS `backorder`;
 CREATE TABLE `backorder`  (
   `BackOrderID` int NOT NULL AUTO_INCREMENT,
-  `ISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ISBN` int NULL DEFAULT NULL,
   `BookTitle` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `PublisherName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PublisherID` int NULL DEFAULT NULL,
   `SupplierID` int NULL DEFAULT NULL,
   `Quantity` int NULL DEFAULT NULL,
   `RegistrationDate` date NULL DEFAULT NULL,
   PRIMARY KEY (`BackOrderID`) USING BTREE,
   INDEX `ISBN`(`ISBN` ASC) USING BTREE,
   INDEX `SupplierID`(`SupplierID` ASC) USING BTREE,
-  CONSTRAINT `backorder_ibfk_1` FOREIGN KEY (`ISBN`) REFERENCES `books` (`ISBN`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `backorder_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `suppliers` (`SupplierID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  CONSTRAINT `backorder_ibfk_2` FOREIGN KEY (`ISBN`) REFERENCES `books` (`ISBN`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of backorder
 -- ----------------------------
+INSERT INTO `backorder` VALUES (23, 1, '1', 1, 1, 12, '2024-12-25');
 
 -- ----------------------------
 -- Table structure for book_authors
 -- ----------------------------
 DROP TABLE IF EXISTS `book_authors`;
 CREATE TABLE `book_authors`  (
-  `BookISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `BookISBN` int NOT NULL,
   `AuthorID` int NOT NULL,
   INDEX `book_authors_ibfk_1`(`BookISBN` ASC) USING BTREE,
   CONSTRAINT `book_authors_ibfk_1` FOREIGN KEY (`BookISBN`) REFERENCES `books` (`ISBN`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book_authors
 -- ----------------------------
+INSERT INTO `book_authors` VALUES (7, 6);
+INSERT INTO `book_authors` VALUES (8, 7);
 
 -- ----------------------------
 -- Table structure for book_suppliers
 -- ----------------------------
 DROP TABLE IF EXISTS `book_suppliers`;
 CREATE TABLE `book_suppliers`  (
-  `BookISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `SupplierID` int NOT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `BookISBN` int NOT NULL,
+  `SupplierID` int NOT NULL,
+  INDEX `book_suppliers_ibfk_1`(`BookISBN` ASC) USING BTREE,
+  CONSTRAINT `book_suppliers_ibfk_1` FOREIGN KEY (`BookISBN`) REFERENCES `books` (`ISBN`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book_suppliers
 -- ----------------------------
+INSERT INTO `book_suppliers` VALUES (7, 2);
+INSERT INTO `book_suppliers` VALUES (8, 2);
 
 -- ----------------------------
 -- Table structure for books
 -- ----------------------------
 DROP TABLE IF EXISTS `books`;
 CREATE TABLE `books`  (
-  `ISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ISBN` int NOT NULL AUTO_INCREMENT,
   `Title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `PublisherID` int NULL DEFAULT NULL,
   `Price` decimal(10, 2) NOT NULL,
@@ -100,17 +108,19 @@ CREATE TABLE `books`  (
   PRIMARY KEY (`ISBN`) USING BTREE,
   INDEX `PublisherID`(`PublisherID` ASC) USING BTREE,
   CONSTRAINT `books_ibfk_1` FOREIGN KEY (`PublisherID`) REFERENCES `publishers` (`PublisherID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of books
 -- ----------------------------
-INSERT INTO `books` VALUES ('1', '1', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES ('2', '2', NULL, 2.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES ('3', '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES ('4', '123', NULL, 111.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES ('5', '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES ('6', '11', NULL, 11.00, '1', '', '', 1, NULL, NULL);
+INSERT INTO `books` VALUES (1, '1', NULL, 1.00, NULL, NULL, NULL, 1, NULL, NULL);
+INSERT INTO `books` VALUES (2, '2', NULL, 2.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES (3, '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES (4, '123', NULL, 111.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES (5, '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `books` VALUES (6, '11', NULL, 11.00, '1', '', '', 1, NULL, NULL);
+INSERT INTO `books` VALUES (7, '1', NULL, 1.00, '1', '1', NULL, 1, NULL, NULL);
+INSERT INTO `books` VALUES (8, '1', NULL, 1.00, '1', '1', NULL, 1, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for customers
@@ -144,7 +154,7 @@ INSERT INTO `customers` VALUES ('4', 'scrypt:32768:8:1$Oy1exssrKWqeg083$d12044c6
 -- ----------------------------
 DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE `inventory`  (
-  `ISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ISBN` int NOT NULL,
   `SupplierID` int NULL DEFAULT NULL,
   `StockQuantity` int NULL DEFAULT NULL,
   PRIMARY KEY (`ISBN`) USING BTREE,
@@ -160,7 +170,7 @@ CREATE TABLE `inventory`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `missingbooks`;
 CREATE TABLE `missingbooks`  (
-  `ISBN` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ISBN` int NOT NULL,
   `Title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `PublisherID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `SupplierID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -172,8 +182,25 @@ CREATE TABLE `missingbooks`  (
 -- ----------------------------
 -- Records of missingbooks
 -- ----------------------------
-INSERT INTO `missingbooks` VALUES ('1', '1', '1', '1', 1, '2024-12-21 00:00:00');
-INSERT INTO `missingbooks` VALUES ('111', '1', '1', '1', 1, '2024-12-23 00:00:00');
+INSERT INTO `missingbooks` VALUES (1, '1', '1', '1', 1, '2024-12-26 00:00:00');
+INSERT INTO `missingbooks` VALUES (111, '1', '1', '1', 1, '2024-12-23 00:00:00');
+
+-- ----------------------------
+-- Table structure for orderdetail
+-- ----------------------------
+DROP TABLE IF EXISTS `orderdetail`;
+CREATE TABLE `orderdetail`  (
+  `OrderID` int NOT NULL,
+  `ISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Quantity` int NOT NULL,
+  PRIMARY KEY (`OrderID`) USING BTREE,
+  CONSTRAINT `fk_orderID` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of orderdetail
+-- ----------------------------
+INSERT INTO `orderdetail` VALUES (2, '123', 1);
 
 -- ----------------------------
 -- Table structure for orderdetails
@@ -182,7 +209,7 @@ DROP TABLE IF EXISTS `orderdetails`;
 CREATE TABLE `orderdetails`  (
   `OrderDetailID` int NOT NULL AUTO_INCREMENT,
   `OrderID` int NULL DEFAULT NULL,
-  `ISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ISBN` int NULL DEFAULT NULL,
   `Quantity` int NULL DEFAULT NULL,
   `PriceAtOrder` decimal(10, 2) NULL DEFAULT NULL,
   PRIMARY KEY (`OrderDetailID`) USING BTREE,
@@ -210,11 +237,12 @@ CREATE TABLE `orders`  (
   PRIMARY KEY (`OrderID`) USING BTREE,
   INDEX `CustomerID`(`CustomerID` ASC) USING BTREE,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
+INSERT INTO `orders` VALUES (1, '2024-12-26', '1', '1', 1.00, '未发货');
 
 -- ----------------------------
 -- Table structure for publishers
@@ -224,11 +252,12 @@ CREATE TABLE `publishers`  (
   `PublisherID` int NOT NULL AUTO_INCREMENT,
   `PublisherName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`PublisherID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publishers
 -- ----------------------------
+INSERT INTO `publishers` VALUES (1, '1');
 
 -- ----------------------------
 -- Table structure for suppliers
@@ -239,11 +268,25 @@ CREATE TABLE `suppliers`  (
   `SupplierName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `SupplierInfo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`SupplierID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of suppliers
 -- ----------------------------
+INSERT INTO `suppliers` VALUES (1, '激肽酶', '1');
+INSERT INTO `suppliers` VALUES (2, '1', NULL);
+
+-- ----------------------------
+-- View structure for view_customer_info
+-- ----------------------------
+DROP VIEW IF EXISTS `view_customer_info`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_customer_info` AS select `customers`.`CustomerID` AS `id`,`customers`.`Password` AS `password`,`customers`.`Name` AS `name`,`customers`.`Address` AS `address`,`customers`.`AccountBalance` AS `accountbalance`,`customers`.`CreditLevel` AS `creditlevel` from `customers`;
+
+-- ----------------------------
+-- View structure for view_order_info
+-- ----------------------------
+DROP VIEW IF EXISTS `view_order_info`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `view_order_info` AS select `o`.`OrderID` AS `TicketID`,`o`.`TotalAmount` AS `Price`,`o`.`OrderDate` AS `Time`,`od`.`Quantity` AS `Quantity`,`o`.`CustomerID` AS `ReaderID`,`od`.`ISBN` AS `Description`,`o`.`ShippingAddress` AS `Address`,`o`.`ShippingStatus` AS `State` from (`orders` `o` join `orderdetails` `od` on((`o`.`OrderID` = `od`.`OrderID`)));
 
 -- ----------------------------
 -- View structure for viewcustomerorders
@@ -256,7 +299,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `viewcustomerorders` AS s
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `AddNewBook`;
 delimiter ;;
-CREATE PROCEDURE `AddNewBook`(IN p_ISBN VARCHAR(13), IN p_Title VARCHAR(255), IN p_PublisherID INT, IN p_Price DECIMAL(10, 2))
+CREATE PROCEDURE `AddNewBook`(IN p_ISBN INT, IN p_Title VARCHAR(255), IN p_PublisherID INT, IN p_Price DECIMAL(10, 2))
 BEGIN
     INSERT INTO Books (ISBN, Title, PublisherID, Price)
     VALUES (p_ISBN, p_Title, p_PublisherID, p_Price);
@@ -269,7 +312,7 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `UpdateInventory`;
 delimiter ;;
-CREATE PROCEDURE `UpdateInventory`(IN p_ISBN VARCHAR(13), IN p_Quantity INT)
+CREATE PROCEDURE `UpdateInventory`(IN p_ISBN INT, IN p_Quantity INT)
 BEGIN
     UPDATE Inventory
     SET StockQuantity = StockQuantity + p_Quantity

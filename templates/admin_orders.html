@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>订单管理</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <h1>订单管理</h1>
+    <table border="1">
+        <tr>
+            <th>订单ID</th>
+            <th>客户ID</th>
+            <th>订单日期</th>
+            <th>总金额</th>
+            <th>发货状态</th>
+            <th>操作</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.OrderID }}</td>
+            <td>{{ order.CustomerID }}</td>
+            <td>{{ order.OrderDate }}</td>
+            <td>{{ order.TotalAmount }}</td>
+            <td>{{ order.ShippingStatus }}</td>
+            <td>
+                <form action="{{ url_for('main.update_order_status', order_id=order.OrderID) }}" method="post">
+                    <input type="submit" name="status" value="发货" {% if order.ShippingStatus == '已发货' %}disabled{% endif %}>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

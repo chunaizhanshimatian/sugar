@@ -115,10 +115,10 @@
                                 ordersHTML += `
                                     <li>
                                         <p><strong>订单ID:</strong> ${order.OrderID}</p>
-                                        <p><strong>日期:</strong> ${order.Date}</p>
-                                        <p><strong>地址:</strong> ${order.Address}</p>
+                                        <p><strong>日期:</strong> ${order.OrderDate}</p>
+                                        <p><strong>地址:</strong> ${order.ShippingAddress}</p>
                                         <p><strong>总金额:</strong> ${order.TotalAmount}</p>
-                                        <p><strong>状态:</strong> ${order.Status}</p>
+                                        <p><strong>状态:</strong> ${order.ShippingStatus}</p>
                                     </li>
                                 `;
                             });

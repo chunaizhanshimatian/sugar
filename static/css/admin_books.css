@@ -23,3 +23,63 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.books-table {
+    width: 95%; /* 表格宽度 */
+    border-collapse: collapse; /* 边框合并 */
+    max-height: 500px; /* 设置表格的最大高度 */
+    overflow-y: auto; /* 超出部分添加垂直滚动条 */
+    display: block; /* 使表格可以滚动 */
+    border: none; /* 去掉最外面的边框 */
+}
+
+.books-table th,
+.books-table td {
+    border: 1px solid #ddd; /* 单元格边框 */
+    padding: 8px; /* 单元格内边距 */
+    text-align: left; /* 文本左对齐 */
+}
+
+/* 如果需要，可以为表格添加一些额外的样式 */
+.books-table thead {
+    background-color: #f2f2f2; /* 表头背景色 */
+}
+
+.books-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; /* 奇数行背景色 */
+}
+
+.books-table tbody tr:nth-child(even) {
+    background-color: #fff; /* 偶数行背景色 */
+}
+
+.menu {
+    display: flex; /* 使用Flexbox布局 */
+    justify-content: space-between; /* 子元素之间的间距 */
+    align-items: start; /* 子元素在交叉轴上的对齐方式 */
+    margin-top: 20px; /* 与上方元素的间距 */
+}
+
+.menu .books-form {
+    flex-basis: 45%; /* 表单占总宽度的百分比 */
+    text-align: left; /* 文本左对齐 */
+    margin-left: 200px;
+}
+
+.menu .books-table {
+    flex-basis: 100%; /* 表格占总宽度的百分比 */
+    margin-left: 0; /* 去掉左边距 */
+    margin-right: 20px; /* 与右边距 */
+}
+
+/* 响应式设计：当屏幕宽度小于1200px时，表单和表格堆叠显示 */
+@media screen and (max-width: 1200px) {
+    .menu {
+        flex-direction: column;
+    }
+    .menu .books-form,
+    .menu .books-table {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

@@ -289,3 +289,37 @@ def place_order():
                            customer_id=customer_id, 
                            total_amount=total_amount, 
                            shipping_address=shipping_address)
+
+@main_views.route('/admin/orders')
+def show_orders():
+    db = Database()
+    conn = db.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    try:
+        cursor.execute("SELECT * FROM orders")
+        orders = cursor.fetchall()
+    finally:
+        cursor.close()
+        conn.close()
+
+    return render_template('admin_orders.html', orders=orders)
+
+@main_views.route('/admin/update_order_status/<int:order_id>', methods=['POST'])
+def update_order_status(order_id):
+    db = Database()
+    conn = db.connect()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("UPDATE orders SET ShippingStatus = '已发货' WHERE OrderID = %s", (order_id,))
+        conn.commit()
+    except Exception as e:
+        # 记录异常信息
+        print(e)
+        return jsonify({"message": "Failed to update order status", "error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+    return redirect(url_for('main.show_orders'))
