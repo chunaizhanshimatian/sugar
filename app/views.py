@@ -66,39 +66,46 @@ def get_customer_info():
     finally:
         cursor.close()
         conn.close()
-
 @main_views.route('/books', methods=['GET'])
 def search_books():
     isbn = request.args.get('isbn')
     title = request.args.get('title')
-    publisher = request.args.get('publisher')
+    publisher_name = request.args.get('publisher')
     keywords = request.args.get('keywords')
-    author = request.args.get('author')
-    match_degree = request.args.get('match_degree')  # 可选参数
+    author_name = request.args.get('author')
 
     db = Database()
     conn = db.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
-    query = "SELECT * FROM books WHERE 1=1"
+   
+    query = """
+        SELECT 
+            b.ISBN, b.Title, p.PublisherName, b.Price, b.Keywords, b.StockQuantity,
+            a.AuthorName AS Authors
+        FROM books b
+        LEFT JOIN publishers p ON b.PublisherID = p.PublisherID
+        LEFT JOIN book_authors ba ON b.ISBN = ba.BookISBN
+        LEFT JOIN authors a ON ba.AuthorID = a.AuthorID
+    """
     conditions = []
     params = []
 
     if isbn:
-        conditions.append("ISBN = %s")
+        conditions.append("b.ISBN = %s")
         params.append(isbn)
     if title:
-        conditions.append("Title LIKE %s")
-        params.append(f"%{title}%")  # 模糊查询
-    if publisher:
-        conditions.append("PublisherID IN (SELECT PublisherID FROM publishers WHERE PublisherName = %s)")
-        params.append(publisher)
+        conditions.append("b.Title LIKE %s")
+        params.append(f"%{title}%")
+    if publisher_name:
+        conditions.append("p.PublisherName = %s")
+        params.append(publisher_name)
     if keywords:
-        conditions.append("Keywords LIKE %s")
-        params.append(f"%{keywords}%")  # 模糊查询
-    if author:
-        conditions.append("AuthorName LIKE %s")  # 假设有一个作者表和关联
-        params.append(f"%{author}%")  # 模糊查询
+        conditions.append("b.Keywords LIKE %s")
+        params.append(f"%{keywords}%")
+    if author_name:
+        conditions.append("a.AuthorName LIKE %s")
+        params.append(f"%{author_name}%")
 
     if conditions:
         query += " AND " + " AND ".join(conditions)
@@ -129,7 +136,7 @@ def manage_books():
         # 获取表单数据
         title = request.form.get('title')
         authors = request.form.get('authors').split(',')  # 假设作者字段以逗号分隔
-        publisher_id = request.form.get('publisher_id')
+        publisher_name = request.form.get('publisher')  # 获取出版社名称
         price = request.form.get('price')
         keywords = request.form.get('keywords').split(',')  # 假设关键字字段以逗号分隔
         summary = request.form.get('summary')
@@ -143,13 +150,18 @@ def manage_books():
             return redirect(url_for('main.manage_books'))
         
         try:
+            # 首先，获取出版社ID
+            cursor.execute("SELECT PublisherID FROM publishers WHERE PublisherName = %s", (publisher_name,))
+            publisher_id = cursor.fetchone()
+            if not publisher_id:
+                raise ValueError("未找到出版社。")
+
             # 插入书籍信息到数据库（不包括ISBN，因为它是自增的）
-            cursor.execute("INSERT INTO books (Title, PublisherID, Price, Keywords, Summary, StockQuantity) VALUES (%s, %s, %s, %s, %s, %s)", (title, publisher_id, price, ','.join(keywords), summary, stock_quantity))
+            cursor.execute("INSERT INTO books (Title, PublisherID, Price, Keywords, Summary, StockQuantity) VALUES (%s, %s, %s, %s, %s, %s)", (title, publisher_id['PublisherID'], price, ','.join(keywords), summary, stock_quantity))
             conn.commit()
             
             # 获取自增的ISBN
             last_inserted_isbn = cursor.lastrowid
-            
             
             # 处理作者关系
             for author in authors:
@@ -174,7 +186,7 @@ def manage_books():
                     conn.commit()
             
             flash('新书添加成功！')
-        except pymysql.MySQLError as e:
+        except (pymysql.MySQLError, ValueError) as e:
             conn.rollback()
             flash('添加新书失败：' + str(e))
         finally:
@@ -183,11 +195,16 @@ def manage_books():
         return redirect(url_for('main.manage_books'))
     
     # 查询所有图书信息
-    cursor.execute("SELECT * FROM books")
-    books = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    
+    try:
+        cursor.execute("SELECT b.ISBN, b.Title, p.PublisherName, b.Price, b.Keywords, b.StockQuantity, a.AuthorName AS Authors FROM books b LEFT JOIN publishers p ON b.PublisherID = p.PublisherID LEFT JOIN book_authors ba ON b.ISBN = ba.BookISBN LEFT JOIN authors a ON ba.AuthorID = a.AuthorID")
+        books = cursor.fetchall()
+    except pymysql.MySQLError as e:
+        flash('查询图书信息失败：' + str(e))
+        return redirect(url_for('main.manage_books'))
+    finally:
+        cursor.close()
+        conn.close()
+
     return render_template('admin_books.html', books=books)
 
 @main_views.route('/admin/missingBook')
@@ -269,14 +286,17 @@ def place_order():
     # 以下代码是一个简化的示例，实际应用中需要更复杂的逻辑
 
     order_date = datetime.now().strftime('%Y-%m-%d')
-    total_amount = 1  # 假设这是一个计算总金额的函数
+    total_amount = 20  # 假设这是一个计算总金额的函数
 
     # 插入订单信息到数据库，不包括自增的OrderID
     db = Database()
     conn = db.connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO orders (OrderDate, CustomerID, ShippingAddress, TotalAmount) VALUES (%s, %s, %s, %s)",
-                   (order_date, customer_id, shipping_address, total_amount))
+    cursor.execute("""
+        INSERT INTO orders 
+        (OrderDate, CustomerID, ShippingAddress, TotalAmount, ShippingStatus) 
+        VALUES (%s, %s, %s, %s, %s)
+    """, (order_date, customer_id, shipping_address, total_amount, '未发货'))
     conn.commit()
     order_id = cursor.lastrowid  # 获取数据库生成的自增ID
     cursor.close()

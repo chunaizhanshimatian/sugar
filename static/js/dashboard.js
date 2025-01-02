@@ -42,9 +42,9 @@ function searchCustomer() {
                         <li>
                             <p><strong>订单ID:</strong> ${order.OrderID}</p>
                             <p><strong>日期:</strong> ${order.OrderDate}</p>
-                            <p><strong>地址:</strong> ${order.Address}</p>
+                            <p><strong>地址:</strong> ${order.ShippingAddress}</p>
                             <p><strong>总金额:</strong> ${order.TotalAmount}</p>
-                            <p><strong>状态:</strong> ${order.Status}</p>
+                            <p><strong>状态:</strong> ${order.ShippingStatus}</p>
                         </li>
                     `;
                 });
@@ -77,10 +77,11 @@ function searchBooks() {
                 var row = tableBody.insertRow();
                 row.insertCell(0).textContent = book.ISBN;
                 row.insertCell(1).textContent = book.Title;
-                row.insertCell(2).textContent = book.PublisherID; // 假设PublisherID是外键
+                row.insertCell(2).textContent = book.PublisherName; // 出版社名称
                 row.insertCell(3).textContent = book.Price;
                 row.insertCell(4).textContent = book.Keywords;
                 row.insertCell(5).textContent = book.StockQuantity;
+                row.insertCell(6).textContent = book.Authors; // 作者名称
             });
         })
         .catch(error => console.error('Error:', error));

@@ -2,7 +2,64 @@
 <html>
 <head>
     <title>图书馆主页</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"> -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+
+        .p1, .p2 {
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            margin: 20px auto;}
+
+        .p1
+            {
+                margin-top: 200px;
+                font-size: 30px;
+                font-family: '华文仿宋';
+                font-weight: 900;
+            }
+        .p2 a {
+            margin: 0 15px;
+            color: #0275d8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .p2 a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            width: 100%;
+            margin-top: auto; /* Push the footer to the bottom */
+        }
+    </style>
 </head>
 <body>
     <header>

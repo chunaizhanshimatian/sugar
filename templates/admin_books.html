@@ -3,6 +3,7 @@
 <head>
     <title>管理图书</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_books.css') }}">
+    
 </head>
 <body>
     <h1>管理图书</h1>
@@ -44,7 +45,7 @@
                     <th>目录</th>
                     <th>封皮</th>
                     <th>存货量</th>
-                    <th>供书商</th>
+                    <!-- <th>供书商</th> -->
                 </tr>
                 {% for book in books %}
                 <tr>
@@ -57,7 +58,7 @@
                     <td>{{ book.Summary }}</td>
                     <td>{{ book.CoverImage }}</td>
                     <td>{{ book.StockQuantity }}</td>
-                    <td>{{ book.SupplierName }}</td>
+                    <!-- <td>{{ book.SupplierName }}</td> -->
                 </tr>
                 {% endfor %}
             </table>

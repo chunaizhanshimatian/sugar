@@ -3,6 +3,51 @@
 <head>
     <title>图书馆管理员界面</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* justify-content: center; */
+            min-height: 90vh;
+        }
+        h1 {
+            color: #333;
+            margin-top: 150px;
+            font-size: 2.8em;
+        }
+        .wel {
+            font-size: 2.2em;
+            color: #000000;
+            margin-top: 30px;
+            font-weight: 900;
+            font-family: '华文仿宋';
+        }
+        .work a {
+            margin: 0 15px;
+            color: #0275d8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .work a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            margin-top: 20px; /* Add space between content and footer */
+        }
+    </style>
 </head>
 <body>
     <h1>图书馆管理员界面</h1>
