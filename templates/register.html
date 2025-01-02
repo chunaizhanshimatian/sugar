@@ -9,16 +9,17 @@
     <header>
         <h1>欢迎来到我们的图书馆</h1>
     </header>
-    <h2>注册</h2>
+    
+    <p class="p1">这里是注册页面，请填写以下信息</p>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-    <form method="post" action="/register">
+    <form method="post" action="/register" class="p2">
         <input type="text" name="username" placeholder="用户名" required><br>
         <input type="password" name="password" placeholder="密码" required><br>
         <button type="submit">注册</button>
     </form>
-    <p class="log">已有账号？<a href="/login">登录</a></p>
+    <p class="p2"><a href="/login">已有账号？登录</a></p>
     <footer>
         <p>版权所有 © 2024 年图书馆</p>
     </footer>

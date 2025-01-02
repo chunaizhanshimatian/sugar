@@ -1,85 +1,161 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef2f7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 0%;
+}
+
 h1{
-    margin-top: 10px;
+    margin-top: 0.5%;
+}
+
+p {
     text-align: center;
-}
-
-p{
-    text-align: center;
-}
-
-.menu{
-    text-align: center;
-}
-
-table{
-    margin-left: 500px;
-}
-
-footer {
-    background-color: #f2f2f2;
-    text-align: center;
-    padding: 10px 0;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
-
-.books-table {
-    width: 95%; /* 表格宽度 */
-    border-collapse: collapse; /* 边框合并 */
-    max-height: 500px; /* 设置表格的最大高度 */
-    overflow-y: auto; /* 超出部分添加垂直滚动条 */
-    display: block; /* 使表格可以滚动 */
-    border: none; /* 去掉最外面的边框 */
-}
-
-.books-table th,
-.books-table td {
-    border: 1px solid #ddd; /* 单元格边框 */
-    padding: 8px; /* 单元格内边距 */
-    text-align: left; /* 文本左对齐 */
-}
-
-/* 如果需要，可以为表格添加一些额外的样式 */
-.books-table thead {
-    background-color: #f2f2f2; /* 表头背景色 */
-}
-
-.books-table tbody tr:nth-child(odd) {
-    background-color: #f9f9f9; /* 奇数行背景色 */
-}
-
-.books-table tbody tr:nth-child(even) {
-    background-color: #fff; /* 偶数行背景色 */
+    color: #555;
 }
 
 .menu {
     display: flex; /* 使用Flexbox布局 */
     justify-content: space-between; /* 子元素之间的间距 */
-    align-items: start; /* 子元素在交叉轴上的对齐方式 */
-    margin-top: 20px; /* 与上方元素的间距 */
+    align-items: flex-start; /* 子元素在交叉轴上的对齐方式 */
+    flex-wrap: wrap; /* 允许子元素换行 */
+    margin-top: 0px;
+    padding: 0 20px; /* 添加内边距 */
+    margin-left: 50px;
+    margin-right: 0; /* 移除右边距 */
 }
 
-.menu .books-form {
-    flex-basis: 45%; /* 表单占总宽度的百分比 */
-    text-align: left; /* 文本左对齐 */
-    margin-left: 200px;
+.books-form, .books-table {
+    flex: 1; /* 允许子元素增长和缩小 */
+    min-width: 100px; /* 设置最小宽度 */
+    margin: 10px; /* 外边距 */
 }
 
-.menu .books-table {
-    flex-basis: 100%; /* 表格占总宽度的百分比 */
-    margin-left: 0; /* 去掉左边距 */
-    margin-right: 20px; /* 与右边距 */
+table {
+    width: 150%; /* 宽度为100% */
+    border-collapse: collapse;
+    overflow-x: auto; /* 水平滚动 */
 }
 
-/* 响应式设计：当屏幕宽度小于1200px时，表单和表格堆叠显示 */
-@media screen and (max-width: 1200px) {
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.books-table th,
+.books-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.books-table thead {
+    background-color: #f2f2f2;
+}
+
+.books-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.books-table tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: calc(100% - 18px);
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #0275d8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #025aa5;
+}
+
+/* 媒体查询：针对小屏幕设备 */
+@media screen and (max-width: 768px) {
     .menu {
-        flex-direction: column;
+        flex-direction: column; /* 垂直排列子元素 */
     }
-    .menu .books-form,
-    .menu .books-table {
+    .books-form, .books-table {
         width: 100%;
-        margin: 10px 0;
     }
 }
+
+/* 其他样式保持不变 */
+
+/* 其他样式保持不变 */
+
+.books-table {
+    max-width: 1200px; /* 设置最大宽度，防止在大屏幕上过宽 */
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: auto; /* 左对齐 */
+    margin-right: auto; /* 右对齐 */
+}
+
+.books-table th,
+.books-table td {
+    border: 1px solid #ddd;
+    padding: 8px; /* 适当减少内边距以节省空间 */
+    text-align: left;
+    white-space: nowrap; /* 防止内容换行 */
+}
+
+.books-table thead {
+    background-color: #f2f2f2;
+    font-weight: bold; /* 加粗表头字体 */
+}
+
+.books-table tbody tr {
+    transition: background-color 0.3s; /* 添加背景色过渡效果 */
+}
+
+.books-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.books-table tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+.books-table tbody tr:hover {
+    background-color: #e0e0e0; /* 鼠标悬停时的背景色 */
+}
+
+/* 媒体查询：针对小屏幕设备 */
+@media screen and (max-width: 768px) {
+    .books-table,
+    .books-form {
+        width: 100%;
+    }
+    .books-table th,
+    .books-table td {
+        padding: 4px; /* 在小屏幕上进一步减少内边距 */
+    }
+}
+

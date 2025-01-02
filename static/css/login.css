@@ -1,41 +1,119 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef2f7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 header {
-    background-color: #000000;
-    padding: 10px 0;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    width: 100%;
     text-align: center;
-    color: #ffffff;
+    position: fixed;
+    top: 0;
 }
 
-h2,p,form{
+h2, p, form {
     text-align: center;
 }
 
-h2{
-    margin-top: 50px;
-    font-size: 50px;
-}
-
-form{
-    margin-top: 50px;
-}
-
-.reg{
-    margin-top: 20px;
+h2 {
+    margin-top: 50px; /* Adjusted for fixed header */
     font-size: 30px;
+    font-family: '华文仿宋';
+    font-weight: 900;
 }
 
-a{
-    color: blue;
+form {
+    margin-top: 20px;
+    width: 300px;
+}
+
+.reg {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+a {
+    color: #0275d8;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 footer {
-    background-color: #f2f2f2;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
     text-align: center;
-    padding: 10px 0;
-    position: absolute;
-    bottom: 0;
     width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.submit {
+    padding: 10px 20px;
+    background-color: #0275d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit:hover {
+    background-color: #025aa5;
+}
+
+/* 输入框美化 */
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: calc(100% - 22px); /* 减去padding和border的宽度 */
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* 确保宽度计算包括内边距和边框 */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #0275d8;
+    outline: none; /* 去除焦点时的默认外框 */
+}
+
+/* 按钮美化 */
+.submit {
+    padding: 10px 20px;
+    background-color: #0275d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s; /* 添加transform过渡 */
+}
+
+.submit:hover {
+    background-color: #025aa5;
+    transform: scale(1.05); /* 轻微放大按钮，增加视觉反馈 */
+}
+
+/* 表单标签美化 */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }

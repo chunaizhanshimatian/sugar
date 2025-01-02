@@ -16,15 +16,15 @@
     <div class="menu">
         <!-- 新书入库表单 -->
         <div class="books-form">
-            <h2>新书入库</h2>
-            <form method="POST" action="{{ url_for('main.manage_books') }}">
+            <form method="POST" action="{{ url_for('main.manage_books') }}" class="books-form">
+                <h2>新书入库</h2>
                 书名: <input type="text" name="title" required><br>
                 作者: <input type="text" name="authors"><br>
                 出版社: <input type="text" name="publisher"><br>
                 价格: <input type="text" name="price"><br>
                 关键字: <input type="text" name="keywords"><br>
-                目录: <input type="text" name="summary"><br>
-                封皮: <input type="text" name="cover_image"><br>
+                <!-- 目录: <input type="text" name="summary"><br>
+                封皮: <input type="text" name="cover_image"><br> -->
                 存货量: <input type="number" name="stock_quantity"><br>
                 供书商: <input type="text" name="supplier"><br>
                 <input type="submit" value="添加新书">
@@ -64,8 +64,8 @@
             </table>
         </div>
     </div>
-    <footer>
+    <!-- <footer>
         <p>版权所有 © 2024 年图书馆</p>
-    </footer>
+    </footer> -->
 </body>
 </html>
