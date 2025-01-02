@@ -51,3 +51,52 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-form{
+    margin-left: 10%;
+}
+
+.search-form input[type="text"] {
+    width: calc(12%); /* Subtract padding and border */
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.search-form button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: larger;
+    margin-left: 10px;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.a3{
+    text-align: center;
+}

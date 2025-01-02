@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户信息</title>
+    <!-- 链接到您的CSS文件 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer_info.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>客户信息</h1>
+        <div class="customer-details">
+            <h2>客户详情</h2>
+            <p><strong>客户ID:</strong> {{ customer.CustomerID }}</p>
+            <p><strong>姓名:</strong> {{ customer.Name }}</p>
+            <p><strong>地址:</strong> {{ customer.Address }}</p>
+            <p><strong>账户余额:</strong> {{ customer.AccountBalance }}</p>
+            <p><strong>信用等级:</strong> {{ customer.CreditLevel }}</p>
+        </div>
+        <div class="orders">
+            <h2>订单</h2>
+            {% if orders %}
+                <ul>
+                    {% for order in orders %}
+                        <li>
+                            <p><strong>订单ID:</strong> {{ order.OrderID }}</p>
+                            <p><strong>日期:</strong> {{ order.OrderDate }}</p>
+                            <p><strong>地址:</strong> {{ order.ShippingAddress }}</p>
+                            <p><strong>总金额:</strong> {{ order.TotalAmount }}</p>
+                            <p><strong>状态:</strong> {{ order.ShippingStatus }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>该客户没有订单。</p>
+            {% endif %}
+        </div>
+        <a href="/dashboard">返回仪表盘</a>
+    </div>
+</body>
+</html>

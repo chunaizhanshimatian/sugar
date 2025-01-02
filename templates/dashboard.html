@@ -10,21 +10,15 @@
 
     <h1>图书馆仪表盘</h1>
     <p class="text">这里是图书馆的仪表盘，您可以在这里查询图书。</p>
-    <div><a href="{{ url_for('main.place_order_form') }}">生成订单</a></div>
+    <div class="a3">
+    <a href="{{ url_for('main.place_order_form') }}">生成订单</a>
     <a href="/logout">退出登录</a>
 
     <!-- 客户信息查询表单 -->
 
-    <div class="search-form">
-        <form id="customer-search-form">
-            客户ID: <input type="text" id="customer_id" name="customer_id" required>
-            密码: <input type="password" id="password" name="password" required>
-            <button type="button" onclick="searchCustomer()">查询客户信息</button>
-        </form>
-        <div id="customer-info1" class="customer-info-scroll"></div>
-    </div>
+    <a href="{{ url_for('main.show_customer_info', customer_id=customer_id) }}">查看个人信息</a>
 
-
+    </div> 
     <!-- 书目信息查询表单 -->
     <div class="search-form">
         <form id="book-search-form">

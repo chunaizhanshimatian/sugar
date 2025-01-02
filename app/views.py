@@ -343,3 +343,26 @@ def update_order_status(order_id):
         conn.close()
 
     return redirect(url_for('main.show_orders'))
+
+@main_views.route('/customer-info/<customer_id>')
+def show_customer_info(customer_id):  # 重命名函数
+    # 这里可以添加管理员登录验证逻辑
+    try:
+        db = Database()
+        conn = db.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+        cursor.execute("SELECT * FROM customers WHERE CustomerID = %s", (customer_id,))
+        customer = cursor.fetchone()
+        if not customer:
+            return jsonify({"message": "Customer not found"}), 404
+
+        cursor.execute("SELECT * FROM orders WHERE CustomerID = %s", (customer_id,))
+        orders = cursor.fetchall()
+
+        return render_template('customer_info.html', customer=customer, orders=orders)
+    except Exception as e:
+        return jsonify({"message": "Error retrieving customer info", "error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()

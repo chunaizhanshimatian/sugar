@@ -19,14 +19,15 @@ def index():
 # 登录后的主页路由
 @app.route('/dashboard')
 def dashboard():
-    if 'username' not in session:  # 如果用户未登录，重定向到登录页面
+    if 'username' not in session:
         return redirect(url_for('login'))
     
+    customer_id = session['username']  # 获取当前登录用户的customer_id
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM books")  # 假设你有一个名为 books 的表
     books = cursor.fetchall()
     cursor.close()
-    return render_template('dashboard.html', books=books)  # 登录后的主页
+    return render_template('dashboard.html', books=books, customer_id=customer_id)  # 传递customer_id
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
