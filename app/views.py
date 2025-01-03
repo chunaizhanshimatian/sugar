@@ -278,23 +278,40 @@ def place_order_form():
 @main_views.route('/place_order', methods=['POST'])
 def place_order():
     customer_id = request.form.get('customer_id')
-    books = request.form.get('books').split(',')
-    quantity = int(request.form.get('quantity'))
+    # 假设前端发送的格式为 "123,456,789"，逗号分隔不同的ISBN
+    isbns_data = request.form.get('books')  # ISBN 数据，例如 "123,456,789"
+    quantity = int(request.form.get('quantity'))  # 单独的数量
     shipping_address = request.form.get('shipping_address')
 
-    # 这里应该添加逻辑来检查库存，创建订单，以及更新库存
-    # 以下代码是一个简化的示例，实际应用中需要更复杂的逻辑
+    # 处理 ISBN 数据，分割字符串
+    isbns = isbns_data.split(',')
+    books = [{'isbn': isbn, 'quantity': quantity} for isbn in isbns]
 
+    # 计算总金额和检查库存的逻辑
     order_date = datetime.now().strftime('%Y-%m-%d')
-    total_amount = 20  # 假设这是一个计算总金额的函数
-
-    # 插入订单信息到数据库，不包括自增的OrderID
+    total_amount = 0
     db = Database()
     conn = db.connect()
-    cursor = conn.cursor()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    for book in books:
+        cursor.execute("SELECT Price FROM books WHERE ISBN = %s", (book['isbn'],))
+        book_price = cursor.fetchone()
+        if book_price and 'Price' in book_price:
+            total_amount += book_price['Price'] * book['quantity']
+            cursor.execute("INSERT INTO orderdetails (OrderID, ISBN, Quantity, PriceAtOrder) VALUES (NULL, %s, %s, %s)", (book['isbn'], book['quantity'], book_price['Price']))
+        else:
+            flash(f"未找到ISBN为{book['isbn']}的书籍或书籍价格。")
+            continue  # 如果书籍信息无效，跳过这本书，继续处理下一本
+
+    # 如果总金额为0，可能是由于书籍信息无效或库存不足
+    if total_amount == 0:
+        flash("订单未能创建，因为所有书籍信息无效或库存不足。")
+        return redirect(url_for('place_order_form'))  # 假设有一个表单页面
+
+    # 插入订单信息到数据库，不包括自增的OrderID
     cursor.execute("""
-        INSERT INTO orders 
-        (OrderDate, CustomerID, ShippingAddress, TotalAmount, ShippingStatus) 
+        INSERT INTO orders (OrderDate, CustomerID, ShippingAddress, TotalAmount, ShippingStatus) 
         VALUES (%s, %s, %s, %s, %s)
     """, (order_date, customer_id, shipping_address, total_amount, '未发货'))
     conn.commit()

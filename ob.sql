@@ -11,7 +11,7 @@
  Target Server Version : 80040 (8.0.40)
  File Encoding         : 65001
 
- Date: 26/12/2024 19:36:41
+ Date: 03/01/2025 09:04:33
 */
 
 SET NAMES utf8mb4;
@@ -25,13 +25,14 @@ CREATE TABLE `authors`  (
   `AuthorID` int NOT NULL AUTO_INCREMENT,
   `AuthorName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`AuthorID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of authors
 -- ----------------------------
-INSERT INTO `authors` VALUES (6, '1');
-INSERT INTO `authors` VALUES (7, '1');
+INSERT INTO `authors` VALUES (1, '作者1');
+INSERT INTO `authors` VALUES (2, '作者1，作者2');
+INSERT INTO `authors` VALUES (3, '作者3');
 
 -- ----------------------------
 -- Table structure for backorder
@@ -54,7 +55,6 @@ CREATE TABLE `backorder`  (
 -- ----------------------------
 -- Records of backorder
 -- ----------------------------
-INSERT INTO `backorder` VALUES (23, 1, '1', 1, 1, 12, '2024-12-25');
 
 -- ----------------------------
 -- Table structure for book_authors
@@ -70,8 +70,9 @@ CREATE TABLE `book_authors`  (
 -- ----------------------------
 -- Records of book_authors
 -- ----------------------------
-INSERT INTO `book_authors` VALUES (7, 6);
-INSERT INTO `book_authors` VALUES (8, 7);
+INSERT INTO `book_authors` VALUES (2, 1);
+INSERT INTO `book_authors` VALUES (3, 2);
+INSERT INTO `book_authors` VALUES (4, 3);
 
 -- ----------------------------
 -- Table structure for book_suppliers
@@ -87,8 +88,9 @@ CREATE TABLE `book_suppliers`  (
 -- ----------------------------
 -- Records of book_suppliers
 -- ----------------------------
-INSERT INTO `book_suppliers` VALUES (7, 2);
-INSERT INTO `book_suppliers` VALUES (8, 2);
+INSERT INTO `book_suppliers` VALUES (2, 1);
+INSERT INTO `book_suppliers` VALUES (3, 1);
+INSERT INTO `book_suppliers` VALUES (4, 1);
 
 -- ----------------------------
 -- Table structure for books
@@ -108,19 +110,14 @@ CREATE TABLE `books`  (
   PRIMARY KEY (`ISBN`) USING BTREE,
   INDEX `PublisherID`(`PublisherID` ASC) USING BTREE,
   CONSTRAINT `books_ibfk_1` FOREIGN KEY (`PublisherID`) REFERENCES `publishers` (`PublisherID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of books
 -- ----------------------------
-INSERT INTO `books` VALUES (1, '1', NULL, 1.00, NULL, NULL, NULL, 1, NULL, NULL);
-INSERT INTO `books` VALUES (2, '2', NULL, 2.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES (3, '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES (4, '123', NULL, 111.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES (5, '11', NULL, 1.00, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `books` VALUES (6, '11', NULL, 11.00, '1', '', '', 1, NULL, NULL);
-INSERT INTO `books` VALUES (7, '1', NULL, 1.00, '1', '1', NULL, 1, NULL, NULL);
-INSERT INTO `books` VALUES (8, '1', NULL, 1.00, '1', '1', NULL, 1, NULL, NULL);
+INSERT INTO `books` VALUES (2, '书1', 1, 10.00, '1', NULL, NULL, 99, NULL, NULL);
+INSERT INTO `books` VALUES (3, '书2', 2, 20.00, '1,2', NULL, NULL, 200, NULL, NULL);
+INSERT INTO `books` VALUES (4, '书3', 2, 50.00, '3', NULL, NULL, 1, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for customers
@@ -139,15 +136,7 @@ CREATE TABLE `customers`  (
 -- ----------------------------
 -- Records of customers
 -- ----------------------------
-INSERT INTO `customers` VALUES ('1', 'scrypt:32768:8:1$EDASaXpFRA1Uh7bV$cf3e0e943e3fff93510ac34551b128bec96d04fbf303d89af1bd22eb35690c88116b69c81f999678618011698705c787978d843fd343fa320bf8f04ee9f90860', '1', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('11', 'scrypt:32768:8:1$mYIwW0Fg9huUj73L$7dbf4870fd156f23beb1413e3498253ede0caa7016fa41e20d28ea958c3070cadf6b93685b8f454dae4e4d9db9a4dd626554c70a9cdb4fe508f30fece309de47', '11', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('111', 'scrypt:32768:8:1$FZQiBY46XTqlxrbP$42739c93f0ea43fd67fac8837567dc5a9e0b792ff78e7d957fc2f6f2164de75fa0d005f46de3783b77e10760445c927f7d9aba5b6377b4f781557a1b99a21e6d', '111', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('1111', 'scrypt:32768:8:1$GWYsXgyXDYhkTEzb$aaf05160ef40adefb9e364e158478035ea2ed1ec30023658c42357fdd61f743a9248e82ef8a688e3e897455bdc7ab6edf26cf1337e830af9ceef32991aa93fb6', '1111', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('11111', 'scrypt:32768:8:1$5As42dECCAHS9PqZ$b9d4d164b49d8240942ba814e4f51e0fc789d152b6782a1d0646d608909f99f8f6fefe5a7ee0d00664e026a72cd359048eab82e83868c69843d9136feb5e4a5f', '11111', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('1111111111111', 'scrypt:32768:8:1$aBuufVhnlGb3mtCg$9979bfac8c711a1786116d2e154f01bf11a292ab5b43cff0afe8fa280dced14b7fbbb4536e78d9c0501ea1279d948342205549f6641a8dda232b0719af3bcd71', '1111111111111', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('2', 'scrypt:32768:8:1$PlDxhGVFbUloGeJ3$151a762190ec708cf1eeef56457d538961ea3e7f4f71d8724a8769eb517a1b3fbbc8ab27fa8564e2499e04456add26984e15ce3d50887a632863fc1ee32c6516', '2', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('3', 'scrypt:32768:8:1$9TbPBZWfYaEZuuQY$8968403563edb4678ad8fac05ffa7a0ce36e60d5018d4f7d72bf519e3b8843897c7df82145d28badb4ea6fd521327dcaccc42c7bf7898d3b83a0e6320af32d7b', '3', '', NULL, NULL);
-INSERT INTO `customers` VALUES ('4', 'scrypt:32768:8:1$Oy1exssrKWqeg083$d12044c6cca7ac7c157abd3ffb6f8ffcacac0b27fcb02d6a8569cb1ba59293dc33f80af0120740ecb322e3c48f24bd51a0aa6376244d12c6db5e83a7a9652269', '4', '', NULL, NULL);
+INSERT INTO `customers` VALUES ('hyn', 'scrypt:32768:8:1$RxfMvi9K6ob4ONEh$a3d8487459eecb4e32df8efe0acad814631105ac71de322d18e022cc95a3158d83c4a0b44bc118d0a3847c4584fd0de41c705c81ce3ea8f8d249570ee02f19d4', 'hyn', 'hust', 00010000.00, 0000000001);
 
 -- ----------------------------
 -- Table structure for inventory
@@ -182,25 +171,7 @@ CREATE TABLE `missingbooks`  (
 -- ----------------------------
 -- Records of missingbooks
 -- ----------------------------
-INSERT INTO `missingbooks` VALUES (1, '1', '1', '1', 1, '2024-12-26 00:00:00');
-INSERT INTO `missingbooks` VALUES (111, '1', '1', '1', 1, '2024-12-23 00:00:00');
-
--- ----------------------------
--- Table structure for orderdetail
--- ----------------------------
-DROP TABLE IF EXISTS `orderdetail`;
-CREATE TABLE `orderdetail`  (
-  `OrderID` int NOT NULL,
-  `ISBN` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Quantity` int NOT NULL,
-  PRIMARY KEY (`OrderID`) USING BTREE,
-  CONSTRAINT `fk_orderID` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of orderdetail
--- ----------------------------
-INSERT INTO `orderdetail` VALUES (2, '123', 1);
+INSERT INTO `missingbooks` VALUES (4, '书3', '2', '1', 1, '2025-01-03 09:00:36');
 
 -- ----------------------------
 -- Table structure for orderdetails
@@ -217,11 +188,15 @@ CREATE TABLE `orderdetails`  (
   INDEX `ISBN`(`ISBN` ASC) USING BTREE,
   CONSTRAINT `orderdetails_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orderdetails_ibfk_2` FOREIGN KEY (`ISBN`) REFERENCES `books` (`ISBN`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orderdetails
 -- ----------------------------
+INSERT INTO `orderdetails` VALUES (1, NULL, 2, 1, 10.00);
+INSERT INTO `orderdetails` VALUES (2, NULL, 4, 2, 50.00);
+INSERT INTO `orderdetails` VALUES (5, NULL, 4, 3, 50.00);
+INSERT INTO `orderdetails` VALUES (6, NULL, 4, 2, 50.00);
 
 -- ----------------------------
 -- Table structure for orders
@@ -234,15 +209,22 @@ CREATE TABLE `orders`  (
   `ShippingAddress` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `TotalAmount` decimal(10, 2) NOT NULL,
   `ShippingStatus` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`OrderID`) USING BTREE,
+  PRIMARY KEY (`OrderID` DESC) USING BTREE,
   INDEX `CustomerID`(`CustomerID` ASC) USING BTREE,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
-INSERT INTO `orders` VALUES (1, '2024-12-26', '1', '1', 1.00, '未发货');
+INSERT INTO `orders` VALUES (10, '2025-01-03', 'hyn', 'hust', 100.00, '已发货');
+INSERT INTO `orders` VALUES (9, '2025-01-03', 'hyn', 'hust', 150.00, '已发货');
+INSERT INTO `orders` VALUES (8, '2025-01-03', 'hyn', 'hust', 100.00, '已发货');
+INSERT INTO `orders` VALUES (7, '2025-01-03', 'hyn', 'hust', 10.00, '已发货');
+INSERT INTO `orders` VALUES (6, '2025-01-03', 'hyn', 'hust', 30.00, '已发货');
+INSERT INTO `orders` VALUES (5, '2025-01-03', 'hyn', 'hust', 10.00, '已发货');
+INSERT INTO `orders` VALUES (4, '2025-01-03', 'hyn', 'hust', 60.00, '已发货');
+INSERT INTO `orders` VALUES (1, '2025-01-03', 'hyn', 'hust', 20.00, '已发货');
 
 -- ----------------------------
 -- Table structure for publishers
@@ -252,12 +234,13 @@ CREATE TABLE `publishers`  (
   `PublisherID` int NOT NULL AUTO_INCREMENT,
   `PublisherName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`PublisherID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publishers
 -- ----------------------------
-INSERT INTO `publishers` VALUES (1, '1');
+INSERT INTO `publishers` VALUES (1, '出版社1');
+INSERT INTO `publishers` VALUES (2, '出版社2');
 
 -- ----------------------------
 -- Table structure for suppliers
@@ -268,13 +251,12 @@ CREATE TABLE `suppliers`  (
   `SupplierName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `SupplierInfo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`SupplierID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of suppliers
 -- ----------------------------
-INSERT INTO `suppliers` VALUES (1, '激肽酶', '1');
-INSERT INTO `suppliers` VALUES (2, '1', NULL);
+INSERT INTO `suppliers` VALUES (1, '供书商1', NULL);
 
 -- ----------------------------
 -- View structure for view_customer_info
@@ -322,6 +304,28 @@ END
 delimiter ;
 
 -- ----------------------------
+-- Triggers structure for table books
+-- ----------------------------
+DROP TRIGGER IF EXISTS `AfterBookUpdate`;
+delimiter ;;
+CREATE TRIGGER `AfterBookUpdate` AFTER UPDATE ON `books` FOR EACH ROW BEGIN
+    IF OLD.StockQuantity >= 0 AND NEW.StockQuantity < 0 THEN
+        -- 插入一条新记录到missingbooks表，记录库存变为负数的书籍和缺少的数量
+        INSERT INTO missingbooks (ISBN, Title, PublisherID, SupplierID, Quantity, Register_Date)
+        VALUES (
+            NEW.ISBN, -- 使用更新后的新ISBN
+            NEW.Title, -- 假设books表中包含Title字段
+            NEW.PublisherID, -- 使用更新后的新PublisherID
+            (SELECT SupplierID FROM book_suppliers WHERE BookISBN = NEW.ISBN LIMIT 1), -- 假设只有一个供应商
+            -NEW.StockQuantity, -- 缺少的数量，即更新前的数量减去更新后的数量
+            NOW() -- 注册日期
+        );
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
 -- Triggers structure for table orderdetails
 -- ----------------------------
 DROP TRIGGER IF EXISTS `AfterOrderPlacement`;
@@ -330,6 +334,48 @@ CREATE TRIGGER `AfterOrderPlacement` AFTER INSERT ON `orderdetails` FOR EACH ROW
     UPDATE Inventory
     SET StockQuantity = StockQuantity - NEW.Quantity
     WHERE ISBN = NEW.ISBN;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table orderdetails
+-- ----------------------------
+DROP TRIGGER IF EXISTS `AfterOrderDetailInsertion`;
+delimiter ;;
+CREATE TRIGGER `AfterOrderDetailInsertion` AFTER INSERT ON `orderdetails` FOR EACH ROW BEGIN
+    DECLARE v_isbn INT;
+    DECLARE v_quantity INT;
+
+    -- 获取书籍ISBN和订单数量
+    SET v_isbn = NEW.ISBN;
+    SET v_quantity = NEW.Quantity;
+
+    -- 更新书籍库存
+    UPDATE books
+    SET StockQuantity = StockQuantity - v_quantity
+    WHERE ISBN = v_isbn;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table orders
+-- ----------------------------
+DROP TRIGGER IF EXISTS `AfterOrderCreation`;
+delimiter ;;
+CREATE TRIGGER `AfterOrderCreation` AFTER INSERT ON `orders` FOR EACH ROW BEGIN
+    DECLARE v_customer_id VARCHAR(50);
+    DECLARE v_total_amount DECIMAL(10, 2);
+
+    -- 获取订单的客户ID和总金额
+    SET v_customer_id = NEW.CustomerID;
+    SET v_total_amount = NEW.TotalAmount;
+
+    -- 更新用户余额
+    UPDATE customers
+    SET AccountBalance = AccountBalance - v_total_amount
+    WHERE CustomerID = v_customer_id;
 END
 ;;
 delimiter ;
